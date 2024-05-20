@@ -1,0 +1,50 @@
+"KWERENDY"
+
+(maksymalna wartosc w kolumnie obecnosc)
+SELECT MAX(Obecnosc) AS max_obecnosc FROM frekwencja;
+(minimalna wartosc w kolumnie obecnosc)
+SELECT MIN(Obecnosc) AS min_obecnosc FROM frekwencja;
+(suma wszystkich lekcji)
+SELECT SUM(Ilosc_lekcji) AS suma_lekcji FROM plan_lekcji;
+(obliczenie wszystkich uzytkowniklow)
+SELECT COUNT(*) AS liczba_uzytkownikow FROM uzytkownik;
+(obliczenie sredniuej ocen)
+SELECT AVG(Ocena) AS srednia_ocen FROM oceny;
+------------------------------------------------
+(pokazanie 2 rekordow z tabeli nauczyciele)
+SELECT * FROM nauczyciele LIMIT 2;
+(pokazanie uzytkownikow ktorych nazwa zaczyna sie na "b")
+SELECT Nazwa_Uzytkownika FROM uzytkownik WHERE Nazwa_Uzytkownika LIKE 'B%';
+(Zwracamy wszystkie oceny, dla których istnieje odpowiedni użytkownik, sprawdzając czy istnieje powiązanie między tabelami ocen i użytkowników.)
+SELECT * FROM oceny WHERE EXISTS (SELECT 1 FROM uzytkownik WHERE uzytkownik.ID_Uzytkownika = oceny.ID_Uzytkownika);
+----------------------------------------------------------------------------------------------
+(pokazanie rekordu gdzie wartosc wskazuje 1)
+SELECT * FROM frekwencja WHERE ID_Frekwencji = 1;
+(doddanie kolumny notatki do tabeli frekwencja)
+ALTER TABLE frekwencja ADD Notatki text;
+(nadawie uzytkownikowi user uprawnienie do wykonywania zapytan)
+GRANT SELECT ON oceny TO 'new_user'@'localhost';
+------------------------------------------------------
+(Operator UNION łączy unikalne nazwy nauczycieli i użytkowników, zwracając listę ich imion pod odpowiednimi aliasami.)
+SELECT Nazwa_Nauczyciela AS Imie_Nauczyciela FROM nauczyciele UNION SELECT Nazwa_Uzytkownika AS Imie_Uzytkownika FROM uzytkownik; 
+(Warunek JOIN łączy tabelę oceny z tabelą użytkowników na podstawie identyfikatora użytkownika.)
+SELECT u.Nazwa_Uzytkownika, o.Ocena FROM oceny o JOIN uzytkownik u ON o.ID_Uzytkownika = u.ID_Uzytkownika;
+
+
+
+"Stworzenie uzytkownikow do bazdy danych"
+(admin z wszytskimi uprawnieniami)
+CREATE USER 'adm'@'localhost' IDENTIFIED BY 'haslo123!';
+GRANT ALL PRIVILEGES ON *.* TO 'adm'@'localhost';
+(uzytkownik dyrektor z wiekszacia uprawnien)
+CREATE USER 'dyrektor'@'localhost' IDENTIFIED BY 'szkola123';
+GRANT SELECT, INSERT, UPDATE, DELETE ON nazwa_bazy_danych.* TO 'dyrektor'@'localhost';
+(stworzenie uzytkownika uczen najmniej ma uprawnien)
+CREATE USER 'uczen'@'localhost' IDENTIFIED BY 'pesel';
+GRANT SELECT ON nazwa_bazy_danych.* TO 'uczen'@'localhost';
+(uzytkownik nauczyciel troche wiecej uprawnien niz uczen)
+CREATE USER 'nauczyciel'@'localhost' IDENTIFIED BY 'przedmiot';
+GRANT SELECT, INSERT, UPDATE ON nazwa_bazy_danych.* TO 'nauczyciel'@'localhost';
+
+
+

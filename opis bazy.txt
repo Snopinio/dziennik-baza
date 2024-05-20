@@ -1,0 +1,19 @@
+Uzytkownicy do stworzenia i co moga robić:
+- Uczeń - podglad
+- Nauczyciel - podglad, wstawianie w baze
+- Dykrektor - podglad, wstawianie w baze
+- Admin - wszystko
+
+W bazie będzie:
+a)tabela:
+- plan lekcji
+- przedmioty
+- terminarz
+- frekwencja
+- ogloszenia
+- oceny
+b)uzytkownicy:
+- uczniowie
+- Nauczyciele
+- jeden dyrektor
+- jeden admin dziennika
